@@ -44,11 +44,11 @@
         <div class="card-header">
             <img src="http://localhost:8000/media/{{person.image}}" alt="" width="50px">
             {{ person.username }}
-            <button class="btn btn-primary chevron" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-primary chevron" type="button" data-toggle="collapse" data-target="#{{ person.username }}-collapse" aria-expanded="false" aria-controls="{{ person.username }}-collapse">
                 <i class="fas fa-chevron-down"></i>
               </button>
         </div>
-        <div class="collapse show" id="collapseExample">
+        <div class="collapse show" id="{{ person.username }}-collapse">
         <div class="card-body">
                 <table class="table">
                     <thead class="thead-dark">
@@ -76,7 +76,11 @@
                                 {% endfor %}
                             </td>
                         </tr>
-                      
+                    
+                    {% else %}
+                        <tr>
+                          <td colspan="3" class="text-center">No Data</td>
+                        </tr>  
                     {% endif %}
                     {% endfor %}
                     </tbody>

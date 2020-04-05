@@ -1,11 +1,12 @@
 <!-- templates/home.html-->
 {% extends 'base.html' %}
+{% load paginationLoop %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
 
-{% if pages %}
+{% if pages.nodes %}
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -35,30 +36,37 @@
   <table class="table">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">#</th>
-        {% for item in metas %}
-          {% if item.name != 'id' %}
-            <th scope="col">{{item.name.upper}}</th>
-          {% endif %}
-        {% endfor %}
+        <th scope="col">NAME</th>
+        <th scope="col">EMAIL</th>
+        <th scope="col">PHONE</th>
+        <th scope="col">CONTACT</th>
         <th scope="col">EDIT</th>
         <th scope="col">DELETE</th>
 
       </tr>
     </thead>
     <tbody>
-      {% for items in pages %}
+      {% for item in page.edges %}
         <tr>
-          {% for item in items %}
-            <td>{{ item }}</td>
-          {% endfor %}
           <td>
-            <a href="{% url 'customers:customer_update' pk=items.0 %}">
+            {{ item.node.name }}
+          </td>
+          <td>
+            {{ item.node.email }}
+          </td>
+          <td>
+            {{ item.node.phone }}
+          </td>
+          <td>
+            {{ item.node.firstName }}
+          </td>
+          <td>
+            <a href="{% url 'customers:customer_update' id=item.node.id %}">
               <i class="fas fa-pen"></i>
             </a>
           </td>
           <td>
-            <a href="" data-toggle="modal" data-target="#exampleModal" data-id="{{ items.0 }}">
+            <a href="" data-toggle="modal" data-target="#exampleModal" data-id="{{ item.node.id }}">
               <i class="fas fa-trash"></i>
             </a>
           </td>
@@ -69,7 +77,7 @@
 
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      {% if page_obj.has_previous %}
+      {% if page.pageInfo.currentPage != 1 and page.pageInfo.totalPages != 1 %}
         <li class="page-item">
           <a class="page-link" href="?page=1" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
@@ -77,28 +85,28 @@
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <a class="page-link" href="?page={{ page.pageInfo.currentPage|prevPage }}" aria-label="Previous">
             <span aria-hidden="true">&lsaquo;</span>
             <span class="sr-only">Previous</span>
           </a>
         </li>
       {% endif %}
-      {% for page in paginator.page_range %}
+      {% for item in page.pageInfo.totalPages|paginate %}
         <li class="page-item">
-          <a class="page-link" href="?page={{ page }}">
-            {{ page }}
+          <a class="page-link" href="?page={{ item }}">
+            {{ item }}
           </a>
         </li>
       {% endfor %}
-      {% if page_obj.has_next %}
+      {% if page.pageInfo.totalPages != 1 and page.pageInfo.totalPages != page.pageInfo.currentPage %}
         <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <a class="page-link" href="?page={{ page.pageInfo.currentPage|nextPage }}" aria-label="Next">
             <span aria-hidden="true">&rsaquo;</span>
             <span class="sr-only">Next</span>
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+          <a class="page-link" href="?page={{ page.pageInfo.totalPages }}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
           </a>

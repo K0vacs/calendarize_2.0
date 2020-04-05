@@ -5,3 +5,5 @@ django-bootstrap4
 Pillow
 django-bootstrap-datepicker-plus
 numpy
+sentry-sdk
+requests

@@ -13,8 +13,16 @@ class CustomersPriceForm(forms.ModelForm):
         model = CustomersPrice
         fields = ['services', 'price']
 
-    services = forms.ModelChoiceField(queryset=Services.objects.all())
-    price = forms.IntegerField()
+        services = forms.ModelChoiceField(queryset=Services.objects.all())
+        price = forms.IntegerField()
+
+class CustomerForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField(max_length=100)
+    phone = forms.CharField(max_length=100)
+    contact = forms.CharField(max_length=100)
+
+    
 
 ServiceModelFormset = modelformset_factory(CustomersPrice, form=CustomersPriceForm, fields=('services', 'price'), extra=1)
 

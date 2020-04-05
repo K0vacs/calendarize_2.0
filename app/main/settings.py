@@ -12,6 +12,17 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from dotenv import load_dotenv
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+# sentry_sdk.init(
+#     dsn="https://4df7714130084cb7939c6a13d7064dcb@sentry.assemble.co.za/5",
+#     integrations=[DjangoIntegration()],
+#     environment="localhost",
+#     # If you wish to associate users to errors (assuming you are using
+#     # django.contrib.auth) you may enable sending PII data.
+#     send_default_pii=True
+# )
 
 load_dotenv()
 
